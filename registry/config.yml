@@ -1,0 +1,26 @@
+version: 0.1
+log:
+  level: debug
+  fields:
+    service: registry
+storage:
+  cache:
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /var/lib/registry
+    maxthreads: 100
+  delete:
+    enabled: true
+http:
+  addr: 0.0.0.0:5000
+  secret: asecretforlocaldevelopment
+  headers:
+    X-Content-Type-Options: [nosniff]
+  debug:
+    addr: 0.0.0.0:5001
+health:
+  storagedriver:
+    enable: true
+    interval: 10s
+    threshold: 3
+
