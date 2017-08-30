@@ -26,14 +26,14 @@ if [ ! -e "$tarPath" -o ! -f "$tarPath" ];then
 fi
 
 # load image
-docker load -i "$tarPath"
+docker load -i "$tarPath" >/dev/null
 if [ $? -ne 0 ];then
 	echo "load [$tarPath] failed"
 	exit 2
 fi
 
 # tag image
-docker tag "$imageSrcAddr" "$imageDstAddr"
+docker tag "$imageSrcAddr" "$imageDstAddr" >/dev/null
 if [ $? -ne 0 ];then
         echo "tag [$imageSrcAddr] to [$imageDstAddr] failed"
         exit 3
@@ -42,14 +42,14 @@ fi
 # login
 registry=${imageDstAddr%/*}
 registry=${registry%/*}
-docker login -u "$userName" -p "$password" "$registry"
+docker login -u "$userName" -p "$password" "$registry" >/dev/null
 if [ $? -ne 0 ];then
         echo "user [$userName] login [$registry] failed"
         exit 4
 fi
 
 # push
-docker push "$imageDstAddr"
+docker push "$imageDstAddr" >/dev/null
 if [ $? -ne 0 ];then
         echo "push [$imageDstAddr] failed"
         exit 5
@@ -61,12 +61,12 @@ if [ $? -ne 0 ];then
         echo "rm [$tarPath] failed"
         exit 6
 fi
-docker rmi "$imageSrcAddr"
+docker rmi "$imageSrcAddr" >/dev/null
 if [ $? -ne 0 ];then
         echo "rmImage [$imageSrcAddr] failed"
         exit 7
 fi
-docker rmi "$imageDstAddr"
+docker rmi "$imageDstAddr" >/dev/null
 if [ $? -ne 0 ];then
         echo "rmImage [$imageDstAddr] failed"
         exit 8

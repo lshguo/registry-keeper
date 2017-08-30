@@ -25,7 +25,7 @@ url=${image%:*}
 version=${image##*:}
 url="$url""/manifests/""$version"
 
-digest=`curl  --header "Accept: application/vnd.docker.distribution.manifest.v2+json" -I -X GET "$url" |grep Docker-Content-Digest |awk '{print $2}'` 
+digest=`curl  --header "Accept: application/vnd.docker.distribution.manifest.v2+json" -s -I -X GET "$url" |grep Docker-Content-Digest |awk '{print $2}'` 
 
 # 404
 #echo $digest
@@ -33,6 +33,7 @@ digest=`curl  --header "Accept: application/vnd.docker.distribution.manifest.v2+
 # 把url处理成删除镜像的网址
 url=${url/$version/$digest}
 
-result=`curl -I -X DELETE "$url" |grep "HTTP/" `
+curl -s -I -X DELETE "$url"
 
+echo "success!"
 exit 0

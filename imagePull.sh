@@ -27,7 +27,7 @@ if [ -z "$imageId" ];then
 fi
 
 
-docker save -o /home/qy/pull/"$imageId.tar" "$imageId"
+docker save -o /home/qy/pull/"$imageId.tar" "$imageId" >/dev/null
 if [ $? -ne 0 ];then
         echo "save image [$image] as /home/qy/pull/"$imageId.tar" failed!"
         exit 3
