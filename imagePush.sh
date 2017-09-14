@@ -3,21 +3,20 @@
 # *************注意防重入****************** #
 
 # arg 1: tar绝对路径
-# arg 2: 镜像原本的绝对地址
-# arg 3: 镜像目标的绝对地址
-# arg 4: 用户名
-# arg 5: 密码
+# arg 2: 镜像目标的绝对地址
+# arg 3: 用户名
+# arg 4: 密码
 
-if [ $# != 5 ];then
+if [ $# != 4 ];then
 	echo "5 args are needed!"
 	exit 1
 fi
 
 tarPath="$1"
-imageSrcAddr="$2"
-imageDstAddr="$3"
-userName="$4"
-password="$5"
+#imageSrcAddr="$2"
+imageDstAddr="$2"
+userName="$3"
+password="$4"
 
 # tar exist or not
 if [ ! -e "$tarPath" -o ! -f "$tarPath" ];then
@@ -26,11 +25,13 @@ if [ ! -e "$tarPath" -o ! -f "$tarPath" ];then
 fi
 
 # load image
-docker load -i "$tarPath" >/dev/null
+imageSrcAddr=`docker load -i "$tarPath" |grep 'Loaded image:' |awk '{print $3}'`
 if [ $? -ne 0 ];then
 	echo "load [$tarPath] failed"
 	exit 2
 fi
+
+# echo $imageSrcAddr; exit 0
 
 # tag image
 docker tag "$imageSrcAddr" "$imageDstAddr" >/dev/null
